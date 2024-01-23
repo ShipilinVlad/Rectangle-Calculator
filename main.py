@@ -56,7 +56,40 @@ class RectangleApp(QWidget):
         self.setLayout(vbox)
 
     def calculate(self):
-        pass
+        try:
+            rect1_x1 = int(self.rect1_x1.text())
+            rect1_y1 = int(self.rect1_y1.text())
+            rect1_x2 = int(self.rect1_x2.text())
+            rect1_y2 = int(self.rect1_y2.text())
+
+            rect2_x1 = int(self.rect2_x1.text())
+            rect2_y1 = int(self.rect2_y1.text())
+            rect2_x2 = int(self.rect2_x2.text())
+            rect2_y2 = int(self.rect2_y2.text())
+
+            intersection_rect = self.intersection_rectangle(rect1_x1, rect1_y1,
+                                                            rect1_x2, rect1_y2,
+                                                            rect2_x1, rect2_y1,
+                                                            rect2_x2, rect2_y2)
+
+            self.draw_rectangles(rect1_x1, rect1_y1,
+                                 rect1_x2, rect1_y2,
+                                 rect2_x1, rect2_y1,
+                                 rect2_x2, rect2_y2, intersection_rect)
+
+            intersection_area = self.calculate_area(intersection_rect)
+            union_area = self.calculate_union(rect1_x1, rect1_y1,
+                                              rect1_x2, rect1_y2,
+                                              rect2_x1, rect2_y1,
+                                              rect2_x2, rect2_y2)
+
+            self.result_intersection.setText(
+                f'Пересечение: {intersection_area}')
+            self.result_union.setText(f'Объединение: {union_area}')
+        except ValueError:
+            self.result_intersection.setText(
+                f'Пересечение: Ошибка ввода данных!')
+            self.result_union.setText(f'Объединение: Ошибка ввода данных!')
 
     def intersection_rectangle(self, x1, y1, x2, y2, x3, y3, x4, y4):
         x_intersection = max(x1, x3)
@@ -68,9 +101,17 @@ class RectangleApp(QWidget):
                 width_intersection, height_intersection)
 
     def calculate_union(self, x1, y1, x2, y2, x3, y3, x4, y4):
-        pass
+        intersection_area = self.calculate_area(self.intersection_rectangle(
+            x1, y1, x2, y2, x3, y3, x4, y4))
+        if intersection_area == 0:
+            return int(abs((x2 - x1) * (y2 - y1)) + abs((x4 - x3) * (y4 - y3)))
+        return int(abs((x2 - x1) * (y2 - y1)) +
+                   abs((x4 - x3) * (y4 - y3)) - intersection_area)
 
     def calculate_area(self, rect):
+        rect = list(rect)
+        if rect[2] < 0 or rect[3] < 0:
+            return 0
         return rect[2] * rect[3]
 
     def draw_rectangles(self, x1, y1, x2, y2,
