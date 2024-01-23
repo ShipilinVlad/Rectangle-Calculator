@@ -27,7 +27,7 @@ if __name__ == '__main__':
 ```
 
 ## *Формула:*
-`$S = a * b$`
+$`S = a * b`$
 
 ## *Ссылки:*
 [Лекция, блягодаря которой я смог сделать эту работу](https://e.sfu-kras.ru/pluginfile.php/3313315/mod_folder/content/0/Лекция%20№7.%20Финал.pdf?forcedownload=1)
