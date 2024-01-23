@@ -59,17 +59,42 @@ class RectangleApp(QWidget):
         pass
 
     def intersection_rectangle(self, x1, y1, x2, y2, x3, y3, x4, y4):
-        pass
+        x_intersection = max(x1, x3)
+        y_intersection = max(y1, y3)
+        width_intersection = min(x2, x4) - x_intersection
+        height_intersection = min(y2, y4) - y_intersection
+
+        return (x_intersection, y_intersection,
+                width_intersection, height_intersection)
 
     def calculate_union(self, x1, y1, x2, y2, x3, y3, x4, y4):
         pass
 
     def calculate_area(self, rect):
-        pass
+        return rect[2] * rect[3]
 
     def draw_rectangles(self, x1, y1, x2, y2,
                         x3, y3, x4, y4, intersection_rect):
-        pass
+        self.scene.clear()
+
+        rect1 = QGraphicsRectItem(x1, y1, x2 - x1, y2 - y1)
+        rect2 = QGraphicsRectItem(x3, y3, x4 - x3, y4 - y3)
+
+        brush = QBrush(QColor(0, 0, 255, 100))
+        rect1.setBrush(brush)
+        rect2.setBrush(brush)
+
+        self.scene.addItem(rect1)
+        self.scene.addItem(rect2)
+        if not (x2 < x3 or y2 < y3):
+            intersection_item = QGraphicsRectItem(intersection_rect[0],
+                                                  intersection_rect[1],
+                                                  intersection_rect[2],
+                                                  intersection_rect[3])
+            intersection_item.setBrush(QBrush(QColor(0, 0, 255, 100)))
+            self.scene.addItem(intersection_item)
+
+        self.view.setScene(self.scene)
 
 
 if __name__ == '__main__':
